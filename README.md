@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# Cronograma de Supervisores
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sistema de planificacion de turnos para perforacion minera con 3 supervisores.
 
-## Available Scripts
+## Descripcion
 
-In the project directory, you can run:
+Esta aplicacion genera cronogramas de trabajo para 3 supervisores (S1, S2, S3) en operaciones de perforacion minera, garantizando que siempre haya exactamente 2 supervisores perforando simultaneamente una vez que el sistema esta en regimen.
 
-### `npm start`
+## Reglas del Sistema
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Estados de un Supervisor
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Estado | Codigo | Descripcion |
+|--------|--------|-------------|
+| Subida | S | Dia de llegada al sitio |
+| Induccion | I | Dias de capacitacion inicial |
+| Perforacion | P | Dias de trabajo activo |
+| Bajada | B | Dia de salida del sitio |
+| Descanso | D | Dias de descanso fuera del sitio |
 
-### `npm test`
+### Ciclo de Trabajo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Cada supervisor sigue un ciclo repetitivo:
 
-### `npm run build`
+```
+S -> I (solo primer ciclo) -> P -> B -> D -> S -> P -> B -> D -> ...
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Primer ciclo:**
+- 1 dia de Subida (S)
+- N dias de Induccion (I) - solo la primera vez
+- (diasTrabajo - diasInduccion) dias de Perforacion (P)
+- 1 dia de Bajada (B)
+- (diasDescanso - 2) dias de Descanso (D)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Ciclos siguientes:**
+- 1 dia de Subida (S)
+- diasTrabajo dias de Perforacion (P)
+- 1 dia de Bajada (B)
+- (diasDescanso - 2) dias de Descanso (D)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Regla Principal
 
-### `npm run eject`
+**Siempre deben haber exactamente 2 supervisores perforando** una vez que S3 comienza a perforar.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Comportamiento de cada Supervisor
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **S1**: Ciclo fijo, comienza el dia 0
+- **S3**: Entra calculado para comenzar a perforar cuando S1 baja por primera vez
+- **S2**: Se adapta dinamicamente para mantener siempre 2 perforando
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Formula de Entrada de S3
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+diaEntradaS3 = primeraBajadaS1 - diasInduccion - 1
+```
 
-## Learn More
+## Parametros de Configuracion
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Parametro | Descripcion | Ejemplo |
+|-----------|-------------|---------|
+| Dias de trabajo | Dias consecutivos en sitio | 14 |
+| Dias de descanso | Dias consecutivos fuera | 7 |
+| Dias de induccion | Dias de capacitacion inicial | 5 |
+| Dias de perforacion | Total dias que S1 debe perforar | 90 |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Ejemplos de Regimenes
 
-### Code Splitting
+| Regimen | Trabajo | Descanso | Ciclo Total |
+|---------|---------|----------|-------------|
+| 14x7 | 14 dias | 7 dias | 21 dias |
+| 21x7 | 21 dias | 7 dias | 28 dias |
+| 10x5 | 10 dias | 5 dias | 15 dias |
+| 14x6 | 14 dias | 6 dias | 20 dias |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Validaciones
 
-### Analyzing the Bundle Size
+El sistema valida automaticamente:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. **Cobertura minima**: Nunca menos de 2 perforando (despues de que S3 inicia)
+2. **Cobertura maxima**: Nunca mas de 2 perforando
+3. **Transiciones validas**: No permite secuencias invalidas como S->S o B->S
 
-### Making a Progressive Web App
+## Uso
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Ingresar los parametros de configuracion
+2. Hacer clic en "Calcular Cronograma"
+3. Navegar por las paginas del cronograma (organizadas por ciclo)
+4. Verificar el indicador de validacion
 
-### Advanced Configuration
+## Tecnologias
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- React 18
+- JavaScript ES6+
+- CSS3
 
-### Deployment
+## Instalacion
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm install
+npm start
+```
 
-### `npm run build` fails to minify
+## Scripts Disponibles
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `npm start` - Inicia el servidor de desarrollo
+- `npm build` - Genera la version de produccion
+- `npm test` - Ejecuta las pruebas
+
+## Licencia
+
+MIT
