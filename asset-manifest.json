@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/mineria/static/css/main.697b20fd.css",
+    "main.js": "/mineria/static/js/main.2bd03de9.js",
+    "static/js/453.9acca595.chunk.js": "/mineria/static/js/453.9acca595.chunk.js",
+    "index.html": "/mineria/index.html",
+    "main.697b20fd.css.map": "/mineria/static/css/main.697b20fd.css.map",
+    "main.2bd03de9.js.map": "/mineria/static/js/main.2bd03de9.js.map",
+    "453.9acca595.chunk.js.map": "/mineria/static/js/453.9acca595.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.697b20fd.css",
+    "static/js/main.2bd03de9.js"
+  ]
+}
