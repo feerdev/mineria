@@ -297,20 +297,7 @@ export function calcularCronograma(diasTrabajo, diasDescanso, diasInduccion, dia
 
   const s2 = construirS2Adaptativo(s1, s3, diasTrabajo, diasDescanso, diasInduccion, totalDias);
 
-  let diasPerforacionS1 = 0;
-  let ultimoDia = totalDias - 1;
-
-  for (let i = 0; i < totalDias; i++) {
-    if (s1[i] === ESTADOS.PERFORACION) {
-      diasPerforacionS1++;
-      if (diasPerforacionS1 >= diasPerforacionRequeridos) {
-        ultimoDia = i;
-        break;
-      }
-    }
-  }
-
-  const diasFinales = ultimoDia + 1;
+  const diasFinales = diasPerforacionRequeridos;
 
   const conteoPerforando = [];
   for (let i = 0; i < diasFinales; i++) {

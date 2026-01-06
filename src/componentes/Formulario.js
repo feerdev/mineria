@@ -53,15 +53,15 @@ function Formulario({ onCalcular }) {
       </div>
 
       <div className="formulario-grupo">
-        <label>Dias de perforacion requeridos</label>
+        <label>Dias del cronograma</label>
         <input
           type="number"
           value={diasPerforacion}
           onChange={(e) => setDiasPerforacion(e.target.value)}
           min="10"
-          max="1000"
+          max="1500"
         />
-        <span className="formulario-ayuda">Total de dias que S1 debe perforar</span>
+        <span className="formulario-ayuda">Total de dias calendario</span>
       </div>
 
       <button type="submit" className="boton-calcular">

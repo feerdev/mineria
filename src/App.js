@@ -56,11 +56,7 @@ function App() {
                   <span className="resumen-valor">{parametros.diasInduccion} dias</span>
                 </div>
                 <div className="resumen-item">
-                  <span className="resumen-etiqueta">Perforacion requerida:</span>
-                  <span className="resumen-valor">{parametros.diasPerforacion} dias</span>
-                </div>
-                <div className="resumen-item">
-                  <span className="resumen-etiqueta">Total dias cronograma:</span>
+                  <span className="resumen-etiqueta">Dias cronograma:</span>
                   <span className="resumen-valor">{cronograma.diasTotales} dias</span>
                 </div>
               </div>
